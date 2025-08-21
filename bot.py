@@ -809,16 +809,20 @@ def main():
 
     reg_conv = ConversationHandler(
         entry_points=[CommandHandler("start", start)],
-        states={ASK_FULLNAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, capture_fullname)]},
+        states={
+            ASK_FULLNAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, capture_fullname)]
+        },
         fallbacks=[CommandHandler("cancel", cancel_reg)],
         allow_reentry=True
     )
 
+    # Student handlers
     app.add_handler(reg_conv)
     app.add_handler(CommandHandler("help", help_cmd))
     app.add_handler(CommandHandler("progress", progress))
     app.add_handler(CommandHandler("submit", submit))
-    # Trainer & Admin
+
+    # Trainer & Admin handlers
     app.add_handler(CommandHandler("pin_today", pin_today))
     app.add_handler(CommandHandler("pin_custom", pin_custom))
     app.add_handler(CommandHandler("day_next", day_next))
@@ -831,13 +835,15 @@ def main():
     app.add_handler(CommandHandler("resume", resume_student))
     app.add_handler(CommandHandler("star", star))
     app.add_handler(CommandHandler("bonus", bonus))
-    # Admin
+
+    # Admin-only
     app.add_handler(CommandHandler("post_upgrade_notice", post_upgrade_notice))
     app.add_handler(CommandHandler("certify", certify))
     app.add_handler(CommandHandler("graduate", graduate))
 
-    log.info("Photex Media Service Team is online.")
-    app.run_polling(close_loop=False)
+    log.info("🤖 Photex Media Service Team is online.")
+    app.run_polling()
+
 
 if __name__ == "__main__":
     main()
